@@ -43,7 +43,6 @@ else
 		# If the file exists it runs the check-out routine and calculate time spent for the day
 		
 		CHECKOUTTIME=(`date +%s`)
-		echo "Checkout time: $CHECKOUTTIME"
 	
 		CHECKINTIME=(`cat $TODAYSLOG`)
 		TIME=(`expr $CHECKOUTTIME - $CHECKINTIME`)
@@ -52,7 +51,8 @@ else
 		echo $(convertsecs $TIME) > $INSTALLPATH/log/$USER-time-worked.log
 
 		# Displaying time worked
-		echo $INSTALLPATH/log/$USER-time-worked.log
+		echo "Time worked today:"
+		cat $INSTALLPATH/log/$USER-time-worked.log
 
 		echo && echo "Pausing..." && sleep 5
 

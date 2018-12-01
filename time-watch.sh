@@ -7,13 +7,21 @@ INSTALLPATH="/home/pi/ca-time-watch" # No trailing slash
 
 TODAYSLOG=($INSTALLPATH/log/$USER-`date +%Y-%m-%d`)
 
+# Functions
+convertsecs() {
+	((h=${1}/3600))
+	((m=(${1}%3600)/60))
+	((s=${1}%60))
+	printf "%02d:%02d:%02d\n" $h $m $s
+}
 
 # Script
 
 # Test to see if script is already running or not
-ps aux | grep "script.sh" | grep -v grep 3>/dev/null
+ps aux | grep "time-watch.sh" | grep -v grep 3>/dev/null
 
-if [ `echo $?` == 0 ]
+# Tests to see if the script is already running or not
+if [[ "`pidof -x $(basename $0) -o %PPID`" ]]
 then
 
 	# Script already running so exiting
@@ -27,9 +35,28 @@ else
 		# If the file does not exist then it runs the Check-in routine
 		touch $TODAYSLOG
 		echo "`date +%s`" > $TODAYSLOG
+		
+		echo "Check IN - `date` "
+		echo && echo "Pausing..." && sleep 5
+		exit 0
 	else
 		# If the file exists it runs the check-out routine and calculate time spent for the day
-		echo "The log file: $USER-`date +%Y-%m-%d` exists"
+		
+		CHECKOUTTIME=(`date +%s`)
+		echo "Checkout time: $CHECKOUTTIME"
+	
+		CHECKINTIME=(`cat $TODAYSLOG`)
+		TIME=(`expr $CHECKOUTTIME - $CHECKINTIME`)
+
+		# Logging time worked
+		echo $(convertsecs $TIME) > $INSTALLPATH/log/$USER-time-worked.log
+
+		# Displaying time worked
+		echo $INSTALLPATH/log/$USER-time-worked.log
+
+		echo && echo "Pausing..." && sleep 5
+
+		exit 0
 	fi
 
 fi

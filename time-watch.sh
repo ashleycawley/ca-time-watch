@@ -60,10 +60,3 @@ else
 	fi
 
 fi
-
-
-## Yes
-### Then exit
-
-## No 
-# Carry on with routine

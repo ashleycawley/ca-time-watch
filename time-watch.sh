@@ -13,6 +13,10 @@ convertsecs() {
 	((s=${1}%60))
 	printf "%02d:%02d:%02d\n" $h $m $s
 }
+WAIT() {
+	echo "Pausing system for 10 seconds to prevent repeat RFID reads"
+	sleep 10
+}
 
 # Script
 
@@ -27,7 +31,7 @@ CHECKEDINLOG=($LOGPATH/$USER-checked-in-on-`date +%d-%m-%Y`)
 
 
 # Tests to see if the script is already running or not
-if [[ "`pidof -x $(basename $0) -o %PPID`" ]]
+( if [[ "`pidof -x $(basename $0) -o %PPID`" ]]
 then
 
 	# Script already running so exiting
@@ -44,6 +48,8 @@ else
 		
 		echo "Check IN - `date` "
 	
+		WAIT # Pausing system
+
 		exit 0
 	else
 		# If the file exists it runs the check-out routine and calculate time spent for the day
@@ -54,16 +60,18 @@ else
 		TIMEWORKED=(`expr $CHECKOUTTIME - $CHECKINTIME`)
 
 		# Logging time worked
-		echo $(convertsecs $TIMEWORKED) > "$LOGPATH/$USER time worked on `date +%d-%m-%Y`.log"
+		echo $(convertsecs $TIMEWORKED) > $LOGPATH/$USER-`date +%d-%m-%Y`.log
 
 		# Displaying time worked
 		echo -e "Time worked today: \c"
-		cat "$LOGPATH/$USER time worked on `date +%d-%m-%Y`.log"
+		cat $LOGPATH/$USER-`date +%d-%m-%Y`.log
 
 		# Cleaning up the Check-in log which is no longer needed
 		rm -f $CHECKEDINLOG
 
+		WAIT # Pausing system
+
 		exit 0
 	fi
 
-fi
+fi ) &

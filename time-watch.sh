@@ -23,7 +23,7 @@ mkdir -p $INSTALLPATH/`date +%b-%Y`
 LOGPATH=($INSTALLPATH/`date +%b-%Y`)
 
 
-TODAYSLOG=($LOGPATH/$USER-`date +%Y-%m-%d`)
+TODAYSLOG=($LOGPATH/$USER-checked-in-on-`date +%d-%m-%Y`)
 
 
 # Tests to see if the script is already running or not
@@ -51,14 +51,14 @@ else
 		CHECKOUTTIME=(`date +%s`)
 	
 		CHECKINTIME=(`cat $TODAYSLOG`)
-		TIME=(`expr $CHECKOUTTIME - $CHECKINTIME`)
+		TIMEWORKED=(`expr $CHECKOUTTIME - $CHECKINTIME`)
 
 		# Logging time worked
-		echo $(convertsecs $TIME) > $LOGPATH/$USER-time-worked.log
+		echo $(convertsecs $TIMEWORKED) > "$LOGPATH/$USER time worked on `date +%d-%m-%Y`.log"
 
 		# Displaying time worked
-		echo "Time worked today:"
-		cat $LOGPATH/$USER-time-worked.log
+		echo -e "Time worked today: \c"
+		cat "$LOGPATH/$USER time worked on `date +%d-%m-%Y`.log"
 
 		exit 0
 	fi

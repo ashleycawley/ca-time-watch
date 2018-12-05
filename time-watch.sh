@@ -5,9 +5,8 @@ USER="tkeast"
 FULLNAME="Thomas Keast"
 INSTALLPATH="/home/pi/ca-time-watch" # No trailing slash
 
-TODAYSLOG=($INSTALLPATH/log/$USER-`date +%Y-%m-%d`)
-
 # Functions
+# Converts seconds in to hours, minutes and seconds like: 07:30:12 
 convertsecs() {
 	((h=${1}/3600))
 	((m=(${1}%3600)/60))
@@ -17,8 +16,15 @@ convertsecs() {
 
 # Script
 
-# Test to see if script is already running or not
-ps aux | grep "time-watch.sh" | grep -v grep 3>/dev/null
+# Creates a folder for the month and year, like: Dec-2018
+mkdir -p $INSTALLPATH/`date +%b-%Y`
+
+# Configures the LOGPATH variable to go in this month's folder
+LOGPATH=($INSTALLPATH/`date +%b-%Y`)
+
+
+TODAYSLOG=($LOGPATH/$USER-`date +%Y-%m-%d`)
+
 
 # Tests to see if the script is already running or not
 if [[ "`pidof -x $(basename $0) -o %PPID`" ]]
@@ -37,7 +43,7 @@ else
 		echo "`date +%s`" > $TODAYSLOG
 		
 		echo "Check IN - `date` "
-		echo && echo "Pausing..." && sleep 5
+	
 		exit 0
 	else
 		# If the file exists it runs the check-out routine and calculate time spent for the day
@@ -48,13 +54,11 @@ else
 		TIME=(`expr $CHECKOUTTIME - $CHECKINTIME`)
 
 		# Logging time worked
-		echo $(convertsecs $TIME) > $INSTALLPATH/log/$USER-time-worked.log
+		echo $(convertsecs $TIME) > $LOGPATH/$USER-time-worked.log
 
 		# Displaying time worked
 		echo "Time worked today:"
-		cat $INSTALLPATH/log/$USER-time-worked.log
-
-		echo && echo "Pausing..." && sleep 5
+		cat $LOGPATH/$USER-time-worked.log
 
 		exit 0
 	fi

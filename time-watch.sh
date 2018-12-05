@@ -23,7 +23,7 @@ mkdir -p $INSTALLPATH/`date +%b-%Y`
 LOGPATH=($INSTALLPATH/`date +%b-%Y`)
 
 
-TODAYSLOG=($LOGPATH/$USER-checked-in-on-`date +%d-%m-%Y`)
+CHECKEDINLOG=($LOGPATH/$USER-checked-in-on-`date +%d-%m-%Y`)
 
 
 # Tests to see if the script is already running or not
@@ -36,11 +36,11 @@ then
 
 else
 	# Checks that the log file does NOT exist
-	if [ ! -f $TODAYSLOG ]
+	if [ ! -f $CHECKEDINLOG ]
 	then
 		# If the file does not exist then it runs the Check-in routine
-		touch $TODAYSLOG
-		echo "`date +%s`" > $TODAYSLOG
+		touch $CHECKEDINLOG
+		echo "`date +%s`" > $CHECKEDINLOG
 		
 		echo "Check IN - `date` "
 	
@@ -50,7 +50,7 @@ else
 		
 		CHECKOUTTIME=(`date +%s`)
 	
-		CHECKINTIME=(`cat $TODAYSLOG`)
+		CHECKINTIME=(`cat $CHECKEDINLOG`)
 		TIMEWORKED=(`expr $CHECKOUTTIME - $CHECKINTIME`)
 
 		# Logging time worked

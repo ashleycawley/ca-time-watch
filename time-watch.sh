@@ -60,6 +60,9 @@ else
 		echo -e "Time worked today: \c"
 		cat "$LOGPATH/$USER time worked on `date +%d-%m-%Y`.log"
 
+		# Cleaning up the Check-in log which is no longer needed
+		rm -f $CHECKEDINLOG
+
 		exit 0
 	fi
 

@@ -26,7 +26,7 @@ mkdir -p $INSTALLPATH/`date +%b-%Y`
 # Configures the LOGPATH variable to go in this month's folder
 LOGPATH=($INSTALLPATH/`date +%b-%Y`)
 
-
+# Records the temporary log of when staff member checked in
 CHECKEDINLOG=($LOGPATH/$USER-checked-in-on-`date +%d-%m-%Y`)
 
 
@@ -54,12 +54,16 @@ else
 	else
 		# If the file exists it runs the check-out routine and calculate time spent for the day
 		
+		# Saves the checkout time into variable
 		CHECKOUTTIME=(`date +%s`)
 	
+		# Reads previous check-in time and stores it in a variable
 		CHECKINTIME=(`cat $CHECKEDINLOG`)
+
+		# Takes Chekcout Time and subtracts Check In time to get total time worked
 		TIMEWORKED=(`expr $CHECKOUTTIME - $CHECKINTIME`)
 
-		# Logging time worked
+		# Saves log of time worked
 		echo $(convertsecs $TIMEWORKED) > $LOGPATH/$USER-`date +%d-%m-%Y`.log
 
 		# Displaying time worked

@@ -7,7 +7,7 @@ INSTALLPATH="/home/pi/ca-time-watch" # No trailing slash
 
 # Functions
 # Converts seconds in to hours, minutes and seconds like: 07:30:12 
-convertsecs() {
+CONVERT_SECONDS_INTO_TIME() {
 	((h=${1}/3600))
 	((m=(${1}%3600)/60))
 	((s=${1}%60))
@@ -64,7 +64,7 @@ else
 		TIMEWORKED=(`expr $CHECKOUTTIME - $CHECKINTIME`)
 
 		# Saves log of time worked
-		echo $(convertsecs $TIMEWORKED) > $LOGPATH/$USER-`date +%d-%m-%Y`.log
+		echo $(CONVERT_SECONDS_INTO_TIME $TIMEWORKED) > $LOGPATH/$USER-`date +%d-%m-%Y`.log
 
 		# Displaying time worked
 		echo -e "Time worked today: \c"

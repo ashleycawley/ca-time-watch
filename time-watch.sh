@@ -4,6 +4,11 @@
 USER="tkeast"
 FULLNAME="Thomas Keast"
 INSTALLPATH="/home/pi/ca-time-watch" # No trailing slash
+EPOCH='jan 1 1970'
+SUM=0
+TOTALLOG="total.log"
+oIFS="$IFS"
+IFS=$'\n'
 
 # Functions
 # Converts seconds in to hours, minutes and seconds like: 07:30:12 
@@ -74,6 +79,20 @@ else
 		rm -f $CHECKEDINLOG
 
 		WAIT # Pausing system
+
+		# Calculating total hours worked on days so far this month and saving to log file
+		for i in `cat $USER-*`
+		do
+			SUM="$(date -u -d "$EPOCH $i" +%s) + $SUM"
+		done
+		
+		# Stores the total number of seconds of all days in a variable
+		TOTALSECS=$(echo $SUM|bc)
+
+		# Converts seconds in to easy to comprehend time and saves it to a log
+		echo $(CONVERT_SECONDS_INTO_TIME $TOTALSECS) > $LOGPATH/total-hours-so-far.log
+
+		IFS="$oIFS"
 
 		exit 0
 	fi

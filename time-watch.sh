@@ -27,7 +27,7 @@ mkdir -p $INSTALLPATH/`date +%b-%Y`
 LOGPATH=($INSTALLPATH/`date +%b-%Y`)
 
 # Records the temporary log of when staff member checked in
-CHECKEDINLOG=($LOGPATH/$USER-checked-in-on-`date +%d-%m-%Y`)
+CHECKEDINLOG=($LOGPATH/$USER-checked-in-on-`date +%d-%m-%Y`.log)
 
 
 # Tests to see if the script is already running or not

@@ -81,7 +81,7 @@ else
 		WAIT # Pausing system
 
 		# Calculating total hours worked on days so far this month and saving to log file
-		for i in `cat $USER-*`
+		for i in `cat $LOGPATH/$USER-*`
 		do
 			SUM="$(date -u -d "$EPOCH $i" +%s) + $SUM"
 		done

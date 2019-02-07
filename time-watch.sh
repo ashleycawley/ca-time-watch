@@ -48,6 +48,13 @@ LOGPATH=($INSTALLPATH/`date +%b-%Y`)
 # Records the temporary log of when staff member checked in
 CHECKEDINLOG=($LOGPATH/$USER-checked-in-on-`date +%d-%m-%Y`.log)
 
+# If user supplies arguement "totalhours" then it just calculate total hours worked for the month, saves to file and exits
+if [ $1 == 'totalhours']
+then
+		# Totals hours worked so far this month and saves it into a log file
+		TOTAL_HOURS
+		exit 0
+fi
 
 # Tests to see if the script is already running or not
 ( if [[ "`pidof -x $(basename $0) -o %PPID`" ]]

@@ -49,7 +49,7 @@ LOGPATH=($INSTALLPATH/`date +%b-%Y`)
 CHECKEDINLOG=($LOGPATH/$USER-checked-in-on-`date +%d-%m-%Y`.log)
 
 # If user supplies arguement "totalhours" then it just calculate total hours worked for the month, saves to file and exits
-if [ `echo $1` == 'totalhours']
+if [ $1 == 'totalhours' ]
 then
 		# Totals hours worked so far this month and saves it into a log file
 		TOTAL_HOURS

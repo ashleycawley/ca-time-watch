@@ -18,10 +18,6 @@ CONVERT_SECONDS_INTO_TIME() {
 	((s=${1}%60))
 	printf "%02d:%02d:%02d\n" $h $m $s
 }
-WAIT() {
-	echo "Pausing system for 10 seconds to prevent repeat RFID reads"
-	sleep 10
-}
 
 # Script
 
@@ -52,8 +48,6 @@ else
 		echo "`date +%s`" > $CHECKEDINLOG
 		
 		echo "Check IN - `date` "
-	
-		WAIT # Pausing system
 
 		exit 0
 	else
@@ -77,8 +71,6 @@ else
 
 		# Cleaning up the Check-in log which is no longer needed
 		rm -f $CHECKEDINLOG
-
-		WAIT # Pausing system
 
 		# Calculating total hours worked on days so far this month and saving to log file
 		for i in `cat $LOGPATH/$USER-*`

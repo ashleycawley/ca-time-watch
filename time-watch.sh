@@ -53,6 +53,9 @@ if [ $1 == 'totalhours' ]
 then
 		# Totals hours worked so far this month and saves it into a log file
 		TOTAL_HOURS
+
+		# Displays total so far
+		cat $LOGPATH/total-hours-so-far.log
 		exit 0
 fi
 
